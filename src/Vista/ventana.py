@@ -11,15 +11,11 @@ class Ventana(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        BASE_DIR = Path(__file__).resolve().parent.parent.parent #ObjetoTipoPath
 
-        BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-        #Direcciones
+        #Direcciones - Las confioguramos asi para que pueda funcionar donde se ejecute el programa
         fondo_path = BASE_DIR / "resources" / "fondos" / "fondo1.png"
         logo_path = BASE_DIR / "resources" / "logotipos" / "Logotipo3PSinFondo.png"
-
-
-        self.setWindowIcon(QIcon(str(logo_path)))
 
         # Configuración de ventana
         self.setWindowTitle("Proyect - Poker - probability")
@@ -41,7 +37,6 @@ class Ventana(QMainWindow):
         #contenido
         contenido = QWidget()
         layoutMain = QVBoxLayout(contenido)
-
 
         #Imagenes
         fondo1 = QPixmap(str(fondo_path)) #<-- Objeto tipo Pixmasp - que guarda la imagen
@@ -90,3 +85,12 @@ class Ventana(QMainWindow):
         capas.addWidget(contenido)#Las primeras capas quedan ultimas
         capas.addWidget(self.fondo) 
 
+"""
+♠		
+♥		
+♣	
+♦	
+♤	
+♡	
+♧	
+♢	"""
