@@ -3,7 +3,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 from pathlib import Path
-
+from .boton import BotonAnimado
 
 
 class Ventana(QMainWindow):
@@ -52,10 +52,8 @@ class Ventana(QMainWindow):
         self.logoPrincipal.setAlignment(Qt.AlignmentFlag.AlignCenter) #centramos el contenido dentro del label es decir la imagen
         self.logoPrincipal.setPixmap(logo1) #Guaradamos le imagen en la "Caja" --> Logoprincipal = QLabel()
 
-        #Botones
-        iniciar = QPushButton("♦")
-
-        iniciar.setFixedSize(300, 50)
+        #Botones --------------------------------------------------------------------------------------------------------------------------
+        iniciar = BotonAnimado("♦",300,50)
         iniciar.setStyleSheet("""
 
             QPushButton {
@@ -73,8 +71,8 @@ class Ventana(QMainWindow):
             border-radius: 8px;
             font-size: 30px;
         }
-
         """)
+        iniciar.clicked.connect()
 
         layoutMain.addWidget(self.logoPrincipal) 
         layoutMain.setAlignment(Qt.AlignmentFlag.AlignCenter)#centramos el label
@@ -84,6 +82,22 @@ class Ventana(QMainWindow):
 
         capas.addWidget(contenido)#Las primeras capas quedan ultimas
         capas.addWidget(self.fondo) 
+
+
+class VentanaConfig():
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
 
 """
 ♠		
