@@ -13,16 +13,16 @@ class Ventana(QMainWindow):
 
         BASE_DIR = Path(__file__).resolve().parent.parent.parent #ObjetoTipoPath
 
-        #Direcciones - Las confioguramos asi para que pueda funcionar donde se ejecute el programa
+#Direcciones - Las confioguramos asi para que pueda funcionar donde se ejecute el programa
         fondo_path = BASE_DIR / "resources" / "fondos" / "fondo1.png"
         logo_path = BASE_DIR / "resources" / "logotipos" / "Logotipo3PSinFondo.png"
 
-        # Configuración de ventana
+#Configuración de ventana
         self.setWindowTitle("Proyect - Poker - probability")
         self.setWindowIcon(QIcon(str(logo_path)))
         self.setFixedSize(1200, 600) #<-- Tamaño fijo de la ventana
 
-        # Widget central
+#Widget central
         central = QWidget()
         self.setCentralWidget(central)
 
@@ -30,31 +30,31 @@ class Ventana(QMainWindow):
         capas = QStackedLayout(central)
         capas.setStackingMode(QStackedLayout.StackAll)
 
-        # Fondo
+# Fondo
         self.fondo = QLabel() #Creamos un objeto tipo QL 
         self.logoPrincipal = QLabel()
 
-        #contenido
+#contenido
         contenido = QWidget()
         layoutMain = QVBoxLayout(contenido)
 
-        #Imagenes
+#Imagenes
         fondo1 = QPixmap(str(fondo_path)) #<-- Objeto tipo Pixmasp - que guarda la imagen
         logo1 = QPixmap(str(logo_path)) #Guardamos las imagenes en objetos que si podemos usar con Qpixmas no
 
-        #Logo
+#Logo
         self.fondo.setPixmap(fondo1) #Guardamos la imagen en el QLabel
         self.fondo.setScaledContents(True) #La imagen se adapte correctamente
         
-        #Fondo
+#Fondo
         self.logoPrincipal.setFixedSize(300,300) #Tamaño
         self.logoPrincipal.setScaledContents(True) #Dado un escala del Qlabel la imagen se adapta
         self.logoPrincipal.setAlignment(Qt.AlignmentFlag.AlignCenter) #centramos el contenido dentro del label es decir la imagen
         self.logoPrincipal.setPixmap(logo1) #Guaradamos le imagen en la "Caja" --> Logoprincipal = QLabel()
 
-        #Botones --------------------------------------------------------------------------------------------------------------------------
-        iniciar = BotonAnimado("♦",300,50)
-        iniciar.setStyleSheet("""
+#Botones --------------------------------------------------------------------------------------------------------------------------
+        self.iniciar = BotonAnimado("♦",300,50)
+        self.iniciar.setStyleSheet("""
 
             QPushButton {
             background-color: white;
@@ -72,24 +72,42 @@ class Ventana(QMainWindow):
             font-size: 30px;
         }
         """)
-        iniciar.clicked.connect()
+        
 
         layoutMain.addWidget(self.logoPrincipal) 
         layoutMain.setAlignment(Qt.AlignmentFlag.AlignCenter)#centramos el label
         layoutMain.addStretch(1) #Espacios
-        layoutMain.addWidget(iniciar) #Guardamos boton
+        layoutMain.addWidget(self.iniciar) #Guardamos boton
         layoutMain.addStretch(4) 
 
         capas.addWidget(contenido)#Las primeras capas quedan ultimas
         capas.addWidget(self.fondo) 
 
+class VentanaMolde(QWidget):
+    def __init__(self):
+            super().__init__()
+    
+            BASE_DIR = Path(__file__).resolve().parent.parent.parent
+    
+            #Direcciones
+            logo_path = BASE_DIR / "resources" / "logotipos" / "Logotipo3PSinFondo.png"
+    
+            # Configuración de ventana
+            self.setWindowTitle("Proyect - Poker - probability")
+            self.setWindowIcon(QIcon(str(logo_path)))
+            self.setFixedSize(1200, 600) #<-- Tamaño fijo de la ventana
 
-class VentanaConfig():
+#Configuracion
+class VentanaSecundaria(VentanaMolde):
     pass
 
+#Juego
+class VentanaTerciaria(VentanaMolde):
+    pass
 
+#Resultados
 
-
+#Graficas
 
 
 
