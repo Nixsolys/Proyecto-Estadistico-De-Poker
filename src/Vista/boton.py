@@ -8,6 +8,7 @@ class BotonAnimado(QPushButton):
 
 
         self.tamaño_normal = QSize(ancho,alto) #Estamos indicado que el tamaño del boton es el que ya trae
+        self.setFixedSize(self.tamaño_normal)
         self.tamaño_hover = self.tamaño_normal * 1.1 #Aumento de tamaño
 
         #Animacion del tamaño
