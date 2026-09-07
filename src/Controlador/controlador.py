@@ -1,16 +1,13 @@
-from src.Vista.ventana import *
+from src.Vista.ventana_menu import *
 
 class Controlador():
-    def __init__(self,ventana_main,ventana2,ventana3):
-        self.controlador_ventana_manin = ventana_main
-        self.controlador_ventana2 = ventana2
-        self.controlador_ventana3 = ventana3
+    def __init__(self,ventana_main):
+        self.controlador_ventana_main = ventana_main
 
-        self.controlador_ventana_manin.iniciar.clicked.connect(self.next)
+        self.controlador_ventana_main.menu.iniciar.clicked.connect(self.next)
 
     def next(self):
-        print("Siguiente")
-        self.controlador_ventana_manin.hide()
-        self.controlador_ventana2.show() #EL usuario quiere ver la ventan ()
+        
+        self.controlador_ventana_main.capa_main.setCurrentWidget(self.controlador_ventana_main.configuracion)
         
         
