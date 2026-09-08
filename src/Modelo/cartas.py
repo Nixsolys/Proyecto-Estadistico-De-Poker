@@ -1,15 +1,13 @@
 class Carta:
 
-    def __init__(self, palo, alfanumerico):
-
-        palos = {
+    palos = {
             1: "corazon",
             2: "picas",
             3: "diamante",
             4: "trebol"
-        }
+    }
 
-        pesos = {
+    pesos = {
             "A": 1.000,
             "K": 0.923,
             "Q": 0.846,
@@ -23,19 +21,19 @@ class Carta:
             "4": 0.230,
             "3": 0.153,
             "2": 0.076
-        }
+    }
 
-        self.alfanumerico = alfanumerico
-        self.palo = palos.get(palo) #Asignamos con get el palo de la carta
-        self.peso = pesos.get(alfanumerico) # Asignamos el peso de la carta, con get obtenemos el valor asignado a esa clave en este caso el alfanumerico
+    def __init__(self, palo, alfanumerico):
+
+
+        self.alfanumero = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
+
+        self.alfanumerico = str(alfanumerico)
+        self.palo = self.palos.get(palo) #Asignamos con get el palo de la carta
+        self.peso = self.pesos.get(alfanumerico) # Asignamos el peso de la carta, con get obtenemos el valor asignado a esa clave en este caso el alfanumerico
 
         self.fotocarta = f"{self.palo}{self.alfanumerico}.png"
 
-        
-        print("Palo:", self.palo)
-        print("Carta:", self.alfanumerico)
-        print("Peso:", self.peso)
         print("Imagen:", self.fotocarta)
 
 
-asdeDiamantes = Carta(3,"A")
