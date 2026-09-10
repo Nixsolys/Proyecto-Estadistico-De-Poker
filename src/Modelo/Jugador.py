@@ -6,6 +6,7 @@ class Jugador():
 
         self.nombre = nombre
         print(self.nombre)
+        
     def jugador_mano(self,baraja_actual):
         mano1 = Mano()
         self.mano = mano1.obtener_mano(baraja_actual)
