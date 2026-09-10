@@ -55,6 +55,8 @@ class VConfiguracion(VentanaMolde):
 
     #Botones
         self.añadir_jugador = BotonAnimado("♥",50,50)
+        self.eliminar_jugador = BotonAnimado("♡",50,50)
+        self.iniciar_juego = BotonAnimado("-->",50,50)
 
     #Imagenes
         fondo_config_imagen = QPixmap(str(fondo_path))
@@ -98,7 +100,12 @@ class VConfiguracion(VentanaMolde):
         layout_centro.addWidget(self.lista_jugadores,alignment=Qt.AlignmentFlag.AlignCenter)
         layout_centro.addStretch(1)
     #columna Derecha
-        layout_derecho.addWidget(self.añadir_jugador)
+        layout_derecho.addStretch(8)
+        layout_derecho.addWidget(self.añadir_jugador,alignment=Qt.AlignmentFlag.AlignLeft)
+        layout_derecho.addWidget(self.eliminar_jugador,alignment=Qt.AlignmentFlag.AlignLeft)
+        layout_derecho.addStretch(2)
+        layout_derecho.addWidget(self.iniciar_juego,alignment=Qt.AlignmentFlag.AlignRight)
+        layout_derecho.addStretch(1)
 
     #Añdir widget principal a capa
         self.capa_config.addWidget(self.widget_principal)
