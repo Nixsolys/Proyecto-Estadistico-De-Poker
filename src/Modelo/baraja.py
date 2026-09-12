@@ -17,33 +17,21 @@ class Baraja():
 
     def obtener_carta(self,numero_cartas):
         contador = numero_cartas #Cantidad de cartas que queremos obtener
-        contador2 = 0 #Varaible que nos ayuda a imprimir la carta que obtuvimos
-        posiciones = []
+        cartas = []
 
         while contador > 0:
-            numero = random.randint(0, (len(self.baraja)-1)) #Numero aleatorio entre el numero de cartas actuales y 0
-            contador -= 1
+            
+                carta = random.choice(self.baraja) #Escoge una carta aleatoria del mazo
+                print(f"Se obtuvo: {carta.fotocarta}")#Se imprime la carta Ñ
+                cartas.append(carta) #Guardamos la carta
+                print(f"Se elimino: {carta.fotocarta}")
+                self.baraja.remove(carta) #Borramos la carta del mazo
+                contador -= 1
 
-            posiciones.append(numero) #Guardamos el numero aleatorio
-
-            print(f"Se obtuvo: {self.baraja[posiciones[contador2]].fotocarta}")#Se imprime la carta en base a la posicion con el numero aleatorio
-            contador2 +=1 #Aumenta de numero para imprimir la siguiente carta
-        
-        return posiciones
-        
-
-    def borrar_carta(self,posiciones):
-        lista_borrar = []
-        for i in posiciones: #Guardamos los elementos que queremos borrar primero
-                lista_borrar.append(self.baraja[i])
-
-        for i in lista_borrar: #Ahora iteramos en la lista y borramos los elementos directamente
-            print(f"Se elimino: {i.fotocarta}")
-            self.baraja.remove(i)
-
-            print(f"El numero de cartas restantes es: {len(self.baraja)}")
+        return cartas
 
     def imprimir_mazo(self): #Variable que itera en todas las cartas del mazo para imprimirlo
 
         for i in self.baraja:
             print(i.fotocarta)
+ 
