@@ -25,14 +25,11 @@ class Carta:
 
     def __init__(self, palo, alfanumerico):
 
-
         self.alfanumero = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
-
         self.alfanumerico = str(alfanumerico)
         self.palo = self.palos.get(palo) #Asignamos con get el palo de la carta
         self.peso = self.pesos.get(alfanumerico) # Asignamos el peso de la carta, con get obtenemos el valor asignado a esa clave en este caso el alfanumerico
-
-        self.fotocarta = f"{self.alfanumerico}_{self.palo}.png"
+        self.fotocarta = f"{self.alfanumerico}_{self.palo}.png" #Identificador de la foto de la cart
 
 
 

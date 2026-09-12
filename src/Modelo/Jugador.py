@@ -9,4 +9,4 @@ class Jugador():
         
     def jugador_mano(self,baraja_actual):
         mano1 = Mano()
-        self.mano = mano1.obtener_mano(baraja_actual)
+        self.mano = mano1.obtener_mano(baraja_actual) #Añadimos las cartas de la mano al jugador
