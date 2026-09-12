@@ -9,6 +9,7 @@ from src.Modelo.baraja import*
 from src.Modelo.cartas import*
 from src.Modelo.Jugador import*
 from src.Modelo.mano import*
+from src.Modelo.mesa import*
 
 #Administrador
 app = QApplication(sys.argv)
@@ -26,10 +27,18 @@ Baraja_mesa = Baraja()
 Baraja_mesa.crear_baraja()
 
 #mano
-
+mano1 = Mano()
+mano1.obtener_mano(Baraja_mesa)
 #Jugador
-Jugador = Jugador("Camilo")
+Jugador = Jugador("TQM CamilA")
 Jugador.jugador_mano(Baraja_mesa)
+
+#Mesa
+mesa = Mesa(Baraja_mesa)
+mesa.colocar_carta()
+mesa.colocar_carta()
+mesa.colocar_carta()
+Baraja_mesa.imprimir_mazo()
 
 print(len(Baraja_mesa.baraja))
 sys.exit(app.exec())

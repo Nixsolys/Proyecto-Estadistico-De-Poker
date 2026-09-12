@@ -32,8 +32,7 @@ class Carta:
         self.palo = self.palos.get(palo) #Asignamos con get el palo de la carta
         self.peso = self.pesos.get(alfanumerico) # Asignamos el peso de la carta, con get obtenemos el valor asignado a esa clave en este caso el alfanumerico
 
-        self.fotocarta = f"{self.palo}{self.alfanumerico}.png"
+        self.fotocarta = f"{self.alfanumerico}_{self.palo}.png"
 
-        print("Imagen:", self.fotocarta)
 
 
