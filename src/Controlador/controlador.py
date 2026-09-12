@@ -28,11 +28,12 @@ class Controlador():
 
 #Crear jugador
     def crear_jugador(self):
-        Jugador1 = Jugador(self.controlador_ventana_main.configuracion.nombre.text())
+        
+            Jugador1 = Jugador(self.controlador_ventana_main.configuracion.nombre.text())
 
-        self.controlador_ventana_main.configuracion.lista_jugadores.addItem(Jugador1.nombre)
-        self.lista_jugadores.append(Jugador1) # <--- Gurdar jugador
-        print(self.lista_jugadores)
+            self.controlador_ventana_main.configuracion.lista_jugadores.addItem(Jugador1.nombre)
+            self.lista_jugadores.append(Jugador1) # <--- Gurdar jugador
+            print(self.lista_jugadores)
 
 #Eliminar jugador
     def eliminar_jugador(self):

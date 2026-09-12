@@ -28,10 +28,13 @@ Baraja_mesa.crear_baraja()
 
 #mano
 mano1 = Mano()
-mano1.obtener_mano(Baraja_mesa)
+
 #Jugador
-Jugador = Jugador("TQM CamilA")
-Jugador.jugador_mano(Baraja_mesa)
+Jugador1 = Jugador("EMEL")
+Jugador1.jugador_mano(Baraja_mesa)
+
+Jugador3 = Jugador("BRAYAN")
+Jugador3.jugador_mano(Baraja_mesa)
 
 #Mesa
 mesa = Mesa(Baraja_mesa)
