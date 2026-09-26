@@ -19,6 +19,9 @@ class Controlador():
         #Eliminar jugadores
         self.controlador_ventana_main.configuracion.eliminar_jugador.clicked.connect(self.eliminar_jugador)
 
+        #Iniciar juego
+        self.controlador_ventana_main.configuracion.iniciar_juego.clicked.connect(self.iniciar_juego)
+
     #Lista de jugadores
         self.lista_jugadores = []
 
@@ -42,4 +45,7 @@ class Controlador():
         self.lista_jugadores.pop(posicion_jugador_lista) #Eliminar de la lista "self.lista_jugadores = []" 
         self.controlador_ventana_main.configuracion.lista_jugadores.takeItem(posicion_jugador_lista) #Eliminar de la lista visual
         print(self.lista_jugadores)
+
+    def iniciar_juego(self):
+         self.controlador_ventana_main.capa_main.setCurrentWidget(self.controlador_ventana_main.juego)
         

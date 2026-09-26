@@ -6,17 +6,16 @@ from pathlib import Path
 
 class Ventana(QMainWindow):
 
-    def __init__(self,menu,configuracion):
+    def __init__(self,menu,configuracion,juego):
         super().__init__()
 #atributos      
-        self.configuracion = configuracion
         self.menu = menu
-        self.setCentralWidget(self.menu)
-
+        self.configuracion = configuracion
+        self.juego = juego
 
         BASE_DIR = Path(__file__).resolve().parent.parent.parent #ObjetoTipoPath
 
-#Direcciones - Las confioguramos asi para que pueda funcionar donde se ejecute el programa
+#Direcciones - Las configuramos asi para que pueda funcionar donde se ejecute el programa
 
         logo_path = BASE_DIR / "resources" / "logotipos" / "Logotipo3PSinFondo.png"
 
@@ -30,6 +29,7 @@ class Ventana(QMainWindow):
 
         self.capa_main.addWidget(self.menu)
         self.capa_main.addWidget(self.configuracion)
+        self.capa_main.addWidget(self.juego)
 
         self.setCentralWidget(self.capa_main)
 
