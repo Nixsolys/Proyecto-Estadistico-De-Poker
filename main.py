@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QPushButton, QW
 from src.Vista.ventana_menu import Ventanamenu
 from src.Vista.ventana_principal import Ventana
 from src.Vista.ventana_configuracion import VConfiguracion
+from src.Vista.ventana_juego import VentanaJuego
 from src.Controlador.controlador import*
 from src.Modelo.baraja import*
 from src.Modelo.cartas import*
@@ -18,9 +19,14 @@ app = QApplication(sys.argv)
 #Ventanas
 menu = Ventanamenu()
 configuracion = VConfiguracion()
-ventana_principal = Ventana(menu,configuracion)
+juego = VentanaJuego()
+ventana_principal = Ventana(menu,configuracion,juego)
 controlador = Controlador(ventana_principal)
+
 ventana_principal.show()
+
+print("VENTANA MOSTRADA")
+print(ventana_principal.isVisible())
 
 #Modelo
 Baraja_mesa = Baraja()
