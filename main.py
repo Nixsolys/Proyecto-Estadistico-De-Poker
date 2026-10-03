@@ -25,29 +25,4 @@ controlador = Controlador(ventana_principal)
 
 ventana_principal.show()
 
-print("VENTANA MOSTRADA")
-print(ventana_principal.isVisible())
-
-#Modelo
-Baraja_mesa = Baraja()
-Baraja_mesa.crear_baraja()
-
-#mano
-mano1 = Mano()
-
-#Jugador
-Jugador1 = Jugador("EMEL")
-Jugador1.jugador_mano(Baraja_mesa)
-
-Jugador3 = Jugador("BRAYAN")
-Jugador3.jugador_mano(Baraja_mesa)
-
-#Mesa
-mesa = Mesa(Baraja_mesa)
-mesa.colocar_carta()
-mesa.colocar_carta()
-mesa.colocar_carta()
-Baraja_mesa.imprimir_mazo()
-
-print(len(Baraja_mesa.baraja))
 sys.exit(app.exec())

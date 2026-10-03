@@ -1,5 +1,6 @@
 from src.Vista.ventana_menu import *
 from src.Modelo.Jugador import *
+from src.Modelo.baraja import *
 
 #La tarea de esta clase es administrar y comunicar los distintos modulos, con el fin
 #De cada modulo se centre unicamente en sus labores, por ejemplo que la vista no este saturada 
@@ -18,34 +19,61 @@ class Controlador():
         self.controlador_ventana_main.configuracion.añadir_jugador.clicked.connect(self.crear_jugador)
         #Eliminar jugadores
         self.controlador_ventana_main.configuracion.eliminar_jugador.clicked.connect(self.eliminar_jugador)
-
         #Iniciar juego
         self.controlador_ventana_main.configuracion.iniciar_juego.clicked.connect(self.iniciar_juego)
-
-    #Lista de jugadores
+        #Lista de jugadores
         self.lista_jugadores = []
+        #Baaraja del juego
+        self.baraja_main = Baraja()
+        self.baraja_main.crear_baraja()
 
 #Cambiar pagina
     def next(self):
-        self.controlador_ventana_main.capa_main.setCurrentWidget(self.controlador_ventana_main.configuracion)
+                self.controlador_ventana_main.capa_main.setCurrentWidget(self.controlador_ventana_main.configuracion)
 
 #Crear jugador
     def crear_jugador(self):
-        
+
+        if len(self.lista_jugadores) > 0: #Comprobar si hay mas de un jugador
+            contador = 0
+            for i in self.lista_jugadores: #Iterar en la lista de jugadores
+                if i.nombre == self.controlador_ventana_main.configuracion.nombre.text(): #Comprobar que no sea igual el nombre
+                    print("No se puede crear jugadores con nombres iguales")
+                    contador = 1
+                    
+            if contador != 1: #Crear el jugador una vez se pase el filtro
+                print("Se añade el jugador")
+                Jugador1 = Jugador(self.controlador_ventana_main.configuracion.nombre.text())
+
+                self.controlador_ventana_main.configuracion.lista_jugadores.addItem(Jugador1.nombre)
+                self.lista_jugadores.append(Jugador1) # <--- Gurdar jugador
+        else:
+            print("Se añade el jugador") #Crear el primer jugador
             Jugador1 = Jugador(self.controlador_ventana_main.configuracion.nombre.text())
 
             self.controlador_ventana_main.configuracion.lista_jugadores.addItem(Jugador1.nombre)
             self.lista_jugadores.append(Jugador1) # <--- Gurdar jugador
             print(self.lista_jugadores)
 
+
 #Eliminar jugador
     def eliminar_jugador(self):
+            posicion_jugador_lista = self.controlador_ventana_main.configuracion.lista_jugadores.currentRow()
 
-        posicion_jugador_lista = self.controlador_ventana_main.configuracion.lista_jugadores.currentRow() #Esta funcion devuelve la posicion del elemento selecionado
-        self.lista_jugadores.pop(posicion_jugador_lista) #Eliminar de la lista "self.lista_jugadores = []" 
-        self.controlador_ventana_main.configuracion.lista_jugadores.takeItem(posicion_jugador_lista) #Eliminar de la lista visual
-        print(self.lista_jugadores)
 
+            # Comprobar si hay un jugador seleccionado
+            if posicion_jugador_lista == -1:
+                print("Selecciona un jugador para eliminar")
+                return #Para romper la funcion en caso de que no se haya selecionado ningun jugador
+
+            # Eliminar de la lista de jugadores
+            self.lista_jugadores.pop(posicion_jugador_lista)
+
+            # Eliminar de la lista visual
+            self.controlador_ventana_main.configuracion.lista_jugadores.takeItem(posicion_jugador_lista)
+
+#Iniciar juego
     def iniciar_juego(self):
-         self.controlador_ventana_main.capa_main.setCurrentWidget(self.controlador_ventana_main.juego)
-        
+            self.controlador_ventana_main.capa_main.setCurrentWidget(self.controlador_ventana_main.juego)
+            for i in self.lista_jugadores:
+                i.jugador_mano(self.baraja_main)
