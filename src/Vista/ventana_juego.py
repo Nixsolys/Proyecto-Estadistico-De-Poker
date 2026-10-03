@@ -24,21 +24,31 @@ class VentanaJuego(VentanaMolde):
         self.capa_juego = QStackedLayout(self.wideget_principal)
         self.capa_juego.setStackingMode(QStackedLayout.StackAll)
 
-    #Direccion raiz
+    #Direcciones
+
+        #Direccion Raiz
         BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-        self.carta = "zonaoscura.png"
+        self.espacio_vacio = "zonaoscura.png"
+        self.espacio1 = ""
+        self.espacio1 = ""
+        self.espacio1 = ""
+        self.espacio1 = ""
+        self.espacio1 = ""
+
+        self.espacio_mano1 = ""
+        self.espacio_mano1 = ""
 
         fondo_path = BASE_DIR / "resources" / "fondos" / "fondoconfigsinelementos.png"
-        dorso_path = BASE_DIR / "resources" / "componentes" / "cartas" / self.carta
+        dorso_path = BASE_DIR / "resources" / "componentes" / "cartas" / self.espacio_vacio
         baraja_path = BASE_DIR / "resources" / "componentes" / "cartas" / "baraja.png"
         
 
         print(dorso_path)
 
     #imagenes
-        fondo_juego_imagen = QPixmap(str(fondo_path)) 
-        dorso_juego_imagen = QPixmap(str(dorso_path))
+        fondo_juego_imagen = QPixmap(str(fondo_path))
+        dorso_juego_imagen = QPixmap(str(dorso_path)) 
 
     #labels
         label_juego_fondo = QLabel()
@@ -53,9 +63,19 @@ class VentanaJuego(VentanaMolde):
         self.label_mano1 = QLabel()
         self.label_mano2 = QLabel()
 
-        #Nombre del jugador
-        self.texto_nombre = QLabel("EMEL")
+        self.texto_nombre = QLabel()
         self.texto_nombre.setFixedSize(200, 60)
+        self.texto_nombre.setStyleSheet("""
+        
+            QLabel {
+                color: white;
+                background-color: black;
+                font-size: 24px;
+                font-weight: bold;
+                border-radius: 10px;
+                padding: 10px;
+            }
+        """)
 
     #Configuracion de labels
         for label in [
@@ -75,17 +95,7 @@ class VentanaJuego(VentanaMolde):
         caja_win = QGroupBox("Probabilidad de ganar")
         caja_lose = QGroupBox("Probabilidad de perder")
 
-        self.texto_nombre.setStyleSheet("""
-        
-            QLabel {
-                color: white;
-                background-color: black;
-                font-size: 24px;
-                font-weight: bold;
-                border-radius: 10px;
-                padding: 10px;
-            }
-        """)
+
     #Guardar imagenes
         label_juego_fondo.setPixmap(fondo_juego_imagen)
 
@@ -114,7 +124,7 @@ class VentanaJuego(VentanaMolde):
         boton_total = BotonAnimado("Probabilidad Total",100,50)
         boton_relativo = BotonAnimado("Probabilidad Relativa",100,50)
         boton_resultados = BotonAnimado("Resultados", 100,50)
-        boton_next_player = BotonAnimado("Next",100,50)
+        self.boton_next_player = BotonAnimado("Next",100,50)
 
         boton_baraja = BotonAnimado("",190,190)
         boton_baraja.setIcon(QIcon(str(baraja_path)))
@@ -131,7 +141,7 @@ class VentanaJuego(VentanaMolde):
         layout_up.addWidget(boton_relativo)
         layout_up.addWidget(self.texto_nombre)
         layout_up.addWidget(boton_resultados)
-        layout_up.addWidget(boton_next_player)
+        layout_up.addWidget(self.boton_next_player)
 
     #Layout CENTRAL
         layout_central.addWidget(self.label_espacio1)
