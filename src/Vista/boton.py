@@ -31,5 +31,3 @@ class BotonAnimado(QPushButton):
         self.animacion.start()
 
         super().leaveEvent(event)
-
-

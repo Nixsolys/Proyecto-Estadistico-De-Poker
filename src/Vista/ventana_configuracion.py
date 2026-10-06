@@ -9,6 +9,8 @@ class VConfiguracion(VentanaMolde):
     def __init__(self):
         super().__init__()
 
+        print("Se esta ejecuntando la ventana de configuracion: ")
+
     #Direcciones
         BASE_DIR = Path(__file__).resolve().parent.parent.parent
         fondo_path = BASE_DIR / "resources" / "fondos" / "fondoconfigsinelementos.png"
