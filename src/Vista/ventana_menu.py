@@ -85,4 +85,3 @@ class Ventanamenu(VentanaMolde):
 
         self.capa_menu.addWidget(self.contenido)
         self.capa_menu.addWidget(self.label_fondo_imagen)
-        

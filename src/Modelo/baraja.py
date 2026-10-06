@@ -22,9 +22,8 @@ class Baraja():
         while contador > 0:
             
                 carta = random.choice(self.baraja) #Escoge una carta aleatoria del mazo
-                print(f"Se obtuvo: {carta.fotocarta}")#Se imprime la carta Ñ
                 cartas.append(carta) #Guardamos la carta
-                print(f"Se elimino: {carta.fotocarta}")
+                print(f"Se elimino del mazo: {carta.fotocarta}\n")
                 self.baraja.remove(carta) #Borramos la carta del mazo
                 contador -= 1
 

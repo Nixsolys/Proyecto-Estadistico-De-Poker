@@ -6,8 +6,6 @@ class VentanaMolde(QWidget):
     def __init__(self):
             super().__init__()
 
-            print("VentanMolde")
-    
             BASE_DIR = Path(__file__).resolve().parent.parent.parent
     
             #Direcciones
