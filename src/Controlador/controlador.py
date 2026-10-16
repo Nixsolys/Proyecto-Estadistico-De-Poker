@@ -3,7 +3,7 @@ from src.Modelo.Jugador import *
 from src.Modelo.baraja import *
 from PySide6.QtGui import QPixmap
 from src.Modelo.mesa import *
-
+from src.Vista.ventan_selector import SelectorCartas
 """
 La tarea de esta clase es administrar y comunicar los distintos modulos, con el fin
 De cada modulo se centre unicamente en sus labores, por ejemplo que la vista no este saturada 
@@ -17,8 +17,10 @@ class Controlador():
         self.v_menu = self.controlador_ventana_main.menu #Ventana menu principal
         self.v_config = self.controlador_ventana_main.configuracion #Ventana de la configuracion
         self.v_juego = self.controlador_ventana_main.juego #Ventana del juego
+        self.v_graficas = self.controlador_ventana_main.grafica #Ventana de las graficas
 
-    #Atribitos
+
+    #Atributos
         self.lista_jugadores = []
         self.jugador_actual = []
 
@@ -41,8 +43,14 @@ class Controlador():
         self.v_config.iniciar_juego.clicked.connect(self.iniciar_juego) #Iniciar juego
 
         #Juego
-        self.v_juego.boton_next_player.clicked.connect(self.siguiente_jugador)
-        self.v_juego.boton_baraja.clicked.connect(self.poner_mesa)
+        self.v_juego.boton_next_player.clicked.connect(self.siguiente_jugador) #Mostrar datos del sigueinte jugador
+        self.v_juego.boton_baraja.clicked.connect(self.poner_mesa) #Colocar cartas en la mesa
+
+        self.v_juego.boton_baraja.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu) #Conecta el boton con click derecho
+        self.v_juego.boton_baraja.customContextMenuRequested.connect(self.v_juego.abrir_menu_cartas) #Click derecho se conecta con esa funcion
+        self.v_juego.señal.connect(self.carta_mesa)
+        self.v_juego.boton_resultados.clicked.connect(self.resultados)
+
 
 # -------------------------------------------------- METODOS --------------------------------------------------------------------
 
@@ -50,7 +58,7 @@ class Controlador():
     def next(self):
         self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_config)
 
-#Crear jugador
+
     def crear_jugador(self):
         if len(self.lista_jugadores) > 0: #Comprobar si hay mas de un jugador
             contador = 0
@@ -72,7 +80,6 @@ class Controlador():
             self.v_config.lista_jugadores.addItem(Jugador1.nombre)
             self.lista_jugadores.append(Jugador1) # <--- Gurdar jugador
 
-#Eliminar jugador
     def eliminar_jugador(self):
             posicion_jugador_lista = self.v_config.lista_jugadores.currentRow()
 
@@ -88,7 +95,6 @@ class Controlador():
             # Eliminar de la lista visual
             self.v_config.lista_jugadores.takeItem(posicion_jugador_lista)
 
-#Iniciar juego
     def iniciar_juego(self):
         if len(self.lista_jugadores) < 2:
             print("No hay suficientes jugadores para iniciar el juego (Minimo 2)")
@@ -127,9 +133,12 @@ class Controlador():
         self.v_juego.label_mano1.setPixmap(foto_carta1)
         self.v_juego.label_mano2.setPixmap(foto_carta2)
 
+
+#-----------------------------------------------------------------------------------------------------------------------------------
+
     def poner_mesa(self):
 
-    #Ubicar mesa
+        #Ubicar mesa
         self.mesa.colocar_carta()
         
         print(len(self.mesa.espacio_cartas))
@@ -154,7 +163,15 @@ class Controlador():
             self.v_juego.label_espacio4.setPixmap(foto_carta4)
 
         elif len(self.mesa.espacio_cartas) == 5:
-            carta5 = self.BASE_DIR / "resources" / "componentes" / "cartas" / self.mesa.espacio_cartas[3].fotocarta
+            carta5 = self.BASE_DIR / "resources" / "componentes" / "cartas" / self.mesa.espacio_cartas[4].fotocarta
 
             foto_carta5 = QPixmap(str(carta5))
             self.v_juego.label_espacio5.setPixmap(foto_carta5)
+
+    def carta_mesa(self):
+        self.selector_cartas = SelectorCartas(self.baraja_main.baraja,self.v_juego) #Le indicamos que su ventana padre es juego
+        self.selector_cartas.exec() #Abre la ventana de inmediato y obliga a cerrarla 
+
+    def resultados(self):
+        self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_graficas)
+        

@@ -1,3 +1,4 @@
+from PySide6.QtCore import Signal
 from .ventana_molde import VentanaMolde
 from PySide6.QtWidgets import *
 from pathlib import Path
@@ -7,6 +8,21 @@ from .boton import BotonAnimado
 from PySide6.QtCore import QSize
 
 class VentanaJuego(VentanaMolde):   
+
+    señal = Signal()
+
+    def abrir_menu_cartas(self, posicion):
+        menu = QMenu(self.boton_baraja)
+
+        selecionar_mesa = menu.addAction("Mesa")
+        selecionar_mesa.triggered.connect(self.señal.emit)
+
+
+        selecionar_carta_jugador = menu.addAction("Jugador")
+        selecionar_carta_jugador.triggered.connect(self.señal.emit)
+        
+        menu.exec(self.boton_baraja.mapToGlobal(posicion))
+
     def __init__(self):
         print("Ventana Juego en ejecucion: ")
         super().__init__()
