@@ -6,12 +6,14 @@ from pathlib import Path
 
 class Ventana(QMainWindow):
 
-    def __init__(self,menu,configuracion,juego):
+    def __init__(self,menu,configuracion,juego,graficas):
         super().__init__()
 #atributos      
         self.menu = menu
         self.configuracion = configuracion
         self.juego = juego
+        self.grafica = graficas
+        
 
         BASE_DIR = Path(__file__).resolve().parent.parent.parent #ObjetoTipoPath
 
@@ -30,6 +32,8 @@ class Ventana(QMainWindow):
         self.capa_main.addWidget(self.menu)
         self.capa_main.addWidget(self.configuracion)
         self.capa_main.addWidget(self.juego)
+        self.capa_main.addWidget(self.grafica)
+
 
         self.setCentralWidget(self.capa_main)
 

@@ -22,3 +22,9 @@ class Mesa():
             
             for i in self.espacio_cartas:
                 print(f"Espacio carta: {i.fotocarta}") #Imprimir cartas que estan en la mesa
+
+    def carta_especifica(self,carta):
+        if len(self.espacio_cartas) == 5:
+            print("No se pueden añadir mas cartas")
+        else:
+            self.espacio_cartas.append(carta)

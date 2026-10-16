@@ -1,10 +1,12 @@
 #Inicia el programa
 import sys
-from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QPushButton, QWidget, QMainWindow
+from PySide6.QtWidgets import QApplication
 from src.Vista.ventana_menu import Ventanamenu
 from src.Vista.ventana_principal import Ventana
 from src.Vista.ventana_configuracion import VConfiguracion
 from src.Vista.ventana_juego import VentanaJuego
+from src.Vista.ventana_graficos import VentanaGrafica
+
 from src.Controlador.controlador import*
 from src.Modelo.baraja import*
 from src.Modelo.cartas import*
@@ -20,7 +22,8 @@ app = QApplication(sys.argv)
 menu = Ventanamenu()
 configuracion = VConfiguracion()
 juego = VentanaJuego()
-ventana_principal = Ventana(menu,configuracion,juego)
+graficas = VentanaGrafica()
+ventana_principal = Ventana(menu,configuracion,juego,graficas)
 controlador = Controlador(ventana_principal)
 
 ventana_principal.show()

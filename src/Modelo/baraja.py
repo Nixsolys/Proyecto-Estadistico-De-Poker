@@ -23,14 +23,22 @@ class Baraja():
             
                 carta = random.choice(self.baraja) #Escoge una carta aleatoria del mazo
                 cartas.append(carta) #Guardamos la carta
-                print(f"Se elimino del mazo: {carta.fotocarta}\n")
-                self.baraja.remove(carta) #Borramos la carta del mazo
+                self.borrar(carta)
                 contador -= 1
 
         return cartas
+
+    def borrar(self,carta):
+        print(f"Se elimino del mazo: {carta.fotocarta}\n")
+        self.baraja.remove(carta)
 
     def imprimir_mazo(self): #Variable que itera en todas las cartas del mazo para imprimirlo
 
         for i in self.baraja:
             print(i.fotocarta)
- 
+
+    def obtenerCarta_especifica(self, carta):
+        carta_especifica = carta
+        self.baraja.remove(carta)
+        
+        return carta_especifica
