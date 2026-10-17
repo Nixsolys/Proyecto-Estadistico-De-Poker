@@ -10,7 +10,7 @@ De cada modulo se centre unicamente en sus labores, por ejemplo que la vista no 
 Con funciones de crear jugadores"""
 
 class Controlador():
-    def __init__(self,ventana_main):
+    def __init__(self,ventana_main,administrador):
 
     #Ventanas
         self.controlador_ventana_main = ventana_main #Ventana principal - para conectarla con el controlador
@@ -22,11 +22,9 @@ class Controlador():
     #Atributos
         self.lista_jugadores = []
         self.jugador_actual = []
-
         self.baraja_main = Baraja()
-        self.baraja_main.crear_baraja()
-
         self.mesa = Mesa(self.baraja_main)
+        self.administrador = administrador
     
     #Direccion raiz
         self.BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -44,21 +42,26 @@ class Controlador():
         #Juego
         self.v_juego.boton_next_player.clicked.connect(self.siguiente_jugador) #Mostrar datos del sigueinte jugador
         self.v_juego.boton_baraja.clicked.connect(self.ponerMesa_ramdon) #Colocar cartas en la mesa
-
         self.v_juego.boton_baraja.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu) #Conecta el boton con click derecho
         self.v_juego.boton_baraja.customContextMenuRequested.connect(self.v_juego.abrir_menu_cartas) #Click derecho se conecta con esa funcion
         self.v_juego.señal_mesa.connect(self.seleccionarCarta_mesa)
         self.v_juego.señal_jugador.connect(self.seleccionarCarta_jugador)
         self.v_juego.señal_repartir.connect(self.repartirMano_ramdon)
-
         self.v_juego.boton_resultados.clicked.connect(self.resultados)
 
-# -------------------------------------------------- METODOS --------------------------------------------------------------------
+        #graficas
+        self.v_graficas.boton_reiniciar.clicked.connect(self.reiniciar)
+        self.v_graficas.boton_menu.clicked.connect(self.volverMenu)
+        self.v_graficas.boton_salir.clicked.connect(self.salir)
 
-#Cambiar pagina
+# Menu -----------------------------------------------------------------------------------------------------------------------------
+
+    # Sigueinte pagina: Menu de inico --> Configuracion
     def next(self):
         self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_config)
 
+# Configuración --------------------------------------------------------------------------------------------------------------------
+    
     def crear_jugador(self):
         if len(self.lista_jugadores) > 0: #Comprobar si hay mas de un jugador
             contador = 0
@@ -72,7 +75,6 @@ class Controlador():
                 
                 self.v_config.lista_jugadores.addItem(Jugador1.nombre)
                 self.lista_jugadores.append(Jugador1) # <--- Gurdar jugador
-
         else:
             #Crear el primer jugador
             Jugador1 = Jugador(self.v_config.nombre.text())
@@ -81,30 +83,31 @@ class Controlador():
             self.lista_jugadores.append(Jugador1) # <--- Gurdar jugador
 
     def eliminar_jugador(self):
-            posicion_jugador_lista = self.v_config.lista_jugadores.currentRow()
+        posicion_jugador_lista = self.v_config.lista_jugadores.currentRow()
 
-            # Comprobar si hay un jugador seleccionado
-            if posicion_jugador_lista == -1:
-                print("Selecciona un jugador para eliminar")
-                return #Para romper la funcion en caso de que no se haya selecionado ningun jugador
+        # Comprobar si hay un jugador seleccionado
+        if posicion_jugador_lista == -1:
+            print("Selecciona un jugador para eliminar")
+            return #Para romper la funcion en caso de que no se haya selecionado ningun jugador
 
-            # Eliminar de la lista de jugadores
-            print(f"Se elimino el jugador: {self.lista_jugadores[posicion_jugador_lista].nombre}")
-            self.lista_jugadores.pop(posicion_jugador_lista)
+        # Eliminar de la lista de jugadores
+        print(f"Se elimino el jugador: {self.lista_jugadores[posicion_jugador_lista].nombre}")
+        self.lista_jugadores.pop(posicion_jugador_lista)
 
-            # Eliminar de la lista visual
-            self.v_config.lista_jugadores.takeItem(posicion_jugador_lista)
+        # Eliminar de la lista visual
+        self.v_config.lista_jugadores.takeItem(posicion_jugador_lista)
 
+    #Sigueinte pagina: Configuracion --> Juego
     def iniciar_juego(self):
         if len(self.lista_jugadores) < 2:
             print("No hay suficientes jugadores para iniciar el juego (Minimo 2)")
-
         else:
+            self.jugador_actual.append(self.lista_jugadores[0]) #Ubicar al primer jugador
+            self.v_juego.texto_nombre.setText(self.lista_jugadores[0].nombre) #Añadir nombre
+
             self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_juego) #Cambiar ventana
 
-            #Ubicar al primer jugador
-            self.jugador_actual.append(self.lista_jugadores[0])
-            self.v_juego.texto_nombre.setText(self.lista_jugadores[0].nombre)
+# Juego ------------------------------------------------------------------------------------------------------------------------------------------
 
     def siguiente_jugador(self):
 
@@ -113,24 +116,13 @@ class Controlador():
         if self.lista_jugadores[posicion] == self.lista_jugadores[-1]:
             jugador = self.lista_jugadores[0]
             self.jugador_actual[0] = jugador
-
         else:
             jugador = self.lista_jugadores[posicion+1]
             self.jugador_actual[0] = jugador
 
-        self.v_juego.texto_nombre.setText(jugador.nombre)
-
         self.actualizarJugador()
 
-#------------------------------------------------------------------------------------------------------------------------------------------
-
-    def ponerMesa_ramdon(self):
-        #Ubicar mesa
-        self.mesa.colocar_carta()
-        self.actualizarMesa()
-
     def actualizarJugador(self):
-
         jugador = self.jugador_actual[0]
 
         if len(jugador.mano) == 2:
@@ -152,8 +144,6 @@ class Controlador():
             self.v_juego.label_mano1.setPixmap(foto_carta1)
 
         else:
-            jugador = self.jugador_actual[0]
-
             vacio = self.BASE_DIR / "resources" / "componentes" / "cartas" / "zonaoscura.png"
 
             foto_vacio = QPixmap(str(vacio))
@@ -162,8 +152,9 @@ class Controlador():
             self.v_juego.label_mano2.setPixmap(foto_vacio)
             print("El jugador no tiene mano:")
 
-    def actualizarMesa(self):
+        self.v_juego.texto_nombre.setText(jugador.nombre)
 
+    def actualizarMesa(self):
         print(len(self.mesa.espacio_cartas))
 
         if len(self.mesa.espacio_cartas) == 1:
@@ -203,6 +194,11 @@ class Controlador():
             foto_carta5 = QPixmap(str(carta5))
             self.v_juego.label_espacio5.setPixmap(foto_carta5)
 
+    #Mesa
+    def ponerMesa_ramdon(self):
+        self.mesa.colocar_carta()
+        self.actualizarMesa()
+
     def seleccionarCarta_mesa(self):
         self.selector_cartas = SelectorCartas("Mesa",self.baraja_main.baraja,self.v_juego) #Le indicamos que su ventana padre es juego
         self.selector_cartas.carta_selecionada_mesa.connect(self.ponerCarta_mesa)
@@ -213,6 +209,14 @@ class Controlador():
         self.mesa.carta_especifica(carta)
         self.actualizarMesa()
 
+    #Jugador
+    def repartirMano_ramdon(self):
+        if self.jugador_actual[0].mano:
+            print("El jugador ya tiene mano")
+        else:
+            self.jugador_actual[0].jugadorMano_ramdon(self.baraja_main)
+            self.actualizarJugador()
+            
     def seleccionarCarta_jugador(self):
         self.selector_cartas = SelectorCartas("Jugador",self.baraja_main.baraja,self.v_juego) #Le indicamos que su ventana padre es juego
         self.selector_cartas.carta_selecionada_jugador.connect(self.ponerCarta_jugador)
@@ -222,13 +226,41 @@ class Controlador():
         self.jugador_actual[0].jugadorMano(carta)
         self.baraja_main.baraja.remove(carta)
         self.actualizarJugador()
-        
+
+    #Sigueinte pagina: Juego --> Resultados
     def resultados(self):
         self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_graficas)
 
-    def repartirMano_ramdon(self):
-        if self.jugador_actual[0].mano:
-            print("El jugador ya tiene mano")
-        else:
-            self.jugador_actual[0].jugadorMano_ramdon(self.baraja_main)
-            self.actualizarJugador()
+# Resultados -----------------------------------------------------------------------------------------------------------------------------
+
+    def reiniciar(self):
+        pass
+
+    def volverMenu(self):
+        self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_menu)
+        self.limpiarDatos()
+
+    def salir(self):
+        self.administrador.instance().quit()
+
+    def limpiarDatos(self):
+        self.lista_jugadores.clear()
+        self.v_config.lista_jugadores.clear()
+        self.jugador_actual.clear()
+        self.baraja_main.baraja.clear()
+        self.mesa.espacio_cartas.clear()
+        self.baraja_main.crear_baraja()
+
+        vacio = self.BASE_DIR / "resources" / "componentes" / "cartas" / "zonaoscura.png"
+        
+        foto_vacio = QPixmap(str(vacio))
+
+        self.v_juego.label_espacio1.setPixmap(foto_vacio)
+        self.v_juego.label_espacio2.setPixmap(foto_vacio)
+        self.v_juego.label_espacio3.setPixmap(foto_vacio)
+        self.v_juego.label_espacio4.setPixmap(foto_vacio)
+        self.v_juego.label_espacio5.setPixmap(foto_vacio)
+
+        self.v_juego.label_mano1.setPixmap(foto_vacio)
+        self.v_juego.label_mano2.setPixmap(foto_vacio)
+

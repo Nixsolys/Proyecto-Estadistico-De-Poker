@@ -5,6 +5,7 @@ class Baraja():
 
     def __init__(self):
         self.baraja = []
+        self.crear_baraja()
 
     def crear_baraja(self):
 

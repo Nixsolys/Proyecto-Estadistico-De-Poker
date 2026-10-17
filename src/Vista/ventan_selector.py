@@ -16,7 +16,7 @@ class SelectorCartas(QDialog): #ventana secundaria
         super().__init__(parent)
 
         self.setWindowTitle("Seleccionar carta")
-        self.resize(700, 500)
+        self.resize(500, 500)
 
         self.mazo = mazo
 
