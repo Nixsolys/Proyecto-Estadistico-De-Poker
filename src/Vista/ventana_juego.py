@@ -9,17 +9,22 @@ from PySide6.QtCore import QSize
 
 class VentanaJuego(VentanaMolde):   
 
-    señal = Signal()
+    #Señales
+    señal_mesa = Signal()
+    señal_jugador = Signal()
+    señal_repartir = Signal()
 
     def abrir_menu_cartas(self, posicion):
         menu = QMenu(self.boton_baraja)
 
-        selecionar_mesa = menu.addAction("Mesa")
-        selecionar_mesa.triggered.connect(self.señal.emit)
-
+        selecionar_mesa = menu.addAction("Mesa") #Añadimos una opcion en la lista
+        selecionar_mesa.triggered.connect(self.señal_mesa.emit) #
 
         selecionar_carta_jugador = menu.addAction("Jugador")
-        selecionar_carta_jugador.triggered.connect(self.señal.emit)
+        selecionar_carta_jugador.triggered.connect(self.señal_jugador.emit)
+
+        repartir_cartas = menu.addAction("Repartir")
+        repartir_cartas.triggered.connect(self.señal_repartir.emit)
         
         menu.exec(self.boton_baraja.mapToGlobal(posicion))
 

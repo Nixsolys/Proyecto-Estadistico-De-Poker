@@ -3,11 +3,16 @@ from PySide6.QtWidgets import QPushButton
 from pathlib import Path
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize, Signal
+
+
 class SelectorCartas(QDialog): #ventana secundaria
 
-    carta_selecionad = Signal(object)
+    #Señales
+    carta_selecionada_mesa = Signal(object)
+    carta_selecionada_jugador = Signal(object)
 
-    def __init__(self, mazo, parent=None):
+
+    def __init__(self,identificador, mazo, parent=None):
         super().__init__(parent)
 
         self.setWindowTitle("Seleccionar carta")
@@ -38,10 +43,17 @@ class SelectorCartas(QDialog): #ventana secundaria
             self.boton_carta.setIconSize(QSize(70, 100))
             self.boton_carta.setFixedSize(85, 115)
 
-            self.boton_carta.clicked.connect(
-                lambda checked=False, c=carta:
-                self.seleccionar_carta(c)
+            if identificador == "Mesa":
+                self.boton_carta.clicked.connect(
+                    lambda checked=False, c=carta, b = self.boton_carta:
+                    self.seleccionarCarta_mesa(c,b)
+                )
+            else:
+                self.boton_carta.clicked.connect(
+                lambda checked=False, c=carta, b = self.boton_carta:
+                self.seleccionarCarta_jugador(c,b)
             )
+
 
             fila = indice // columnas
             columna = indice % columnas
@@ -50,8 +62,16 @@ class SelectorCartas(QDialog): #ventana secundaria
                 self.boton_carta, fila, columna
             ) #Coloca el boton en esta fila y esta columna
 
-    def seleccionar_carta(self, carta):
+    def seleccionarCarta_mesa(self, carta,boton):
         print("Carta seleccionada:", carta.fotocarta)
-        self.carta_seleccionada.emit(carta)
+        self.carta_selecionada_mesa.emit(carta)
+        self.eliminarBoton(boton)
 
+    def seleccionarCarta_jugador(self, carta,boton):
+        print("Carta seleccionada:", carta.fotocarta)
+        self.carta_selecionada_jugador.emit(carta)
+        self.eliminarBoton(boton)
 
+    def eliminarBoton(self,boton):
+        self.layout_principal.removeWidget(boton) #Borrarlo visualmente
+        boton.deleteLater() #Borrar completamente el objeto
