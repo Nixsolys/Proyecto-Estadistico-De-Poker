@@ -19,7 +19,6 @@ class Controlador():
         self.v_juego = self.controlador_ventana_main.juego #Ventana del juego
         self.v_graficas = self.controlador_ventana_main.grafica #Ventana de las graficas
 
-
     #Atributos
         self.lista_jugadores = []
         self.jugador_actual = []
@@ -44,20 +43,21 @@ class Controlador():
 
         #Juego
         self.v_juego.boton_next_player.clicked.connect(self.siguiente_jugador) #Mostrar datos del sigueinte jugador
-        self.v_juego.boton_baraja.clicked.connect(self.poner_mesa) #Colocar cartas en la mesa
+        self.v_juego.boton_baraja.clicked.connect(self.ponerMesa_ramdon) #Colocar cartas en la mesa
 
         self.v_juego.boton_baraja.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu) #Conecta el boton con click derecho
         self.v_juego.boton_baraja.customContextMenuRequested.connect(self.v_juego.abrir_menu_cartas) #Click derecho se conecta con esa funcion
-        self.v_juego.señal.connect(self.carta_mesa)
-        self.v_juego.boton_resultados.clicked.connect(self.resultados)
+        self.v_juego.señal_mesa.connect(self.seleccionarCarta_mesa)
+        self.v_juego.señal_jugador.connect(self.seleccionarCarta_jugador)
+        self.v_juego.señal_repartir.connect(self.repartirMano_ramdon)
 
+        self.v_juego.boton_resultados.clicked.connect(self.resultados)
 
 # -------------------------------------------------- METODOS --------------------------------------------------------------------
 
 #Cambiar pagina
     def next(self):
         self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_config)
-
 
     def crear_jugador(self):
         if len(self.lista_jugadores) > 0: #Comprobar si hay mas de un jugador
@@ -100,11 +100,7 @@ class Controlador():
             print("No hay suficientes jugadores para iniciar el juego (Minimo 2)")
 
         else:
-            self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_juego)
-            
-            #Crear mano para cada jugador
-            for i in self.lista_jugadores:
-                i.jugador_mano(self.baraja_main)
+            self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_juego) #Cambiar ventana
 
             #Ubicar al primer jugador
             self.jugador_actual.append(self.lista_jugadores[0])
@@ -124,26 +120,65 @@ class Controlador():
 
         self.v_juego.texto_nombre.setText(jugador.nombre)
 
-        carta1 = self.BASE_DIR / "resources" / "componentes" / "cartas" / jugador.mano[0].fotocarta
-        carta2 = self.BASE_DIR / "resources" / "componentes" / "cartas" / jugador.mano[1].fotocarta
+        self.actualizarJugador()
 
-        foto_carta1 = QPixmap(str(carta1))
-        foto_carta2 = QPixmap(str(carta2))
+#------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.v_juego.label_mano1.setPixmap(foto_carta1)
-        self.v_juego.label_mano2.setPixmap(foto_carta2)
-
-
-#-----------------------------------------------------------------------------------------------------------------------------------
-
-    def poner_mesa(self):
-
+    def ponerMesa_ramdon(self):
         #Ubicar mesa
         self.mesa.colocar_carta()
-        
+        self.actualizarMesa()
+
+    def actualizarJugador(self):
+
+        jugador = self.jugador_actual[0]
+
+        if len(jugador.mano) == 2:
+
+            carta1 = self.BASE_DIR / "resources" / "componentes" / "cartas" / jugador.mano[0].fotocarta
+            carta2 = self.BASE_DIR / "resources" / "componentes" / "cartas" / jugador.mano[1].fotocarta
+
+            foto_carta1 = QPixmap(str(carta1))
+            foto_carta2 = QPixmap(str(carta2))
+
+            self.v_juego.label_mano1.setPixmap(foto_carta1)
+            self.v_juego.label_mano2.setPixmap(foto_carta2)
+
+        elif len(jugador.mano) == 1:
+            carta1 = self.BASE_DIR / "resources" / "componentes" / "cartas" / jugador.mano[0].fotocarta
+
+            foto_carta1 = QPixmap(str(carta1))
+
+            self.v_juego.label_mano1.setPixmap(foto_carta1)
+
+        else:
+            jugador = self.jugador_actual[0]
+
+            vacio = self.BASE_DIR / "resources" / "componentes" / "cartas" / "zonaoscura.png"
+
+            foto_vacio = QPixmap(str(vacio))
+   
+            self.v_juego.label_mano1.setPixmap(foto_vacio)
+            self.v_juego.label_mano2.setPixmap(foto_vacio)
+            print("El jugador no tiene mano:")
+
+    def actualizarMesa(self):
+
         print(len(self.mesa.espacio_cartas))
 
-        if len(self.mesa.espacio_cartas) == 3:
+        if len(self.mesa.espacio_cartas) == 1:
+            carta1 = self.BASE_DIR / "resources" / "componentes" / "cartas" / self.mesa.espacio_cartas[0].fotocarta
+
+            foto_carta1 = QPixmap(str(carta1))
+            self.v_juego.label_espacio1.setPixmap(foto_carta1)
+
+        elif len(self.mesa.espacio_cartas) == 2:
+            carta2 = self.BASE_DIR / "resources" / "componentes" / "cartas" / self.mesa.espacio_cartas[1].fotocarta
+
+            foto_carta2 = QPixmap(str(carta2))
+            self.v_juego.label_espacio2.setPixmap(foto_carta2)
+
+        elif len(self.mesa.espacio_cartas) == 3:
             carta1 = self.BASE_DIR / "resources" / "componentes" / "cartas" / self.mesa.espacio_cartas[0].fotocarta
             carta2 = self.BASE_DIR / "resources" / "componentes" / "cartas" / self.mesa.espacio_cartas[1].fotocarta
             carta3 = self.BASE_DIR / "resources" / "componentes" / "cartas" / self.mesa.espacio_cartas[2].fotocarta
@@ -168,10 +203,32 @@ class Controlador():
             foto_carta5 = QPixmap(str(carta5))
             self.v_juego.label_espacio5.setPixmap(foto_carta5)
 
-    def carta_mesa(self):
-        self.selector_cartas = SelectorCartas(self.baraja_main.baraja,self.v_juego) #Le indicamos que su ventana padre es juego
+    def seleccionarCarta_mesa(self):
+        self.selector_cartas = SelectorCartas("Mesa",self.baraja_main.baraja,self.v_juego) #Le indicamos que su ventana padre es juego
+        self.selector_cartas.carta_selecionada_mesa.connect(self.ponerCarta_mesa)
         self.selector_cartas.exec() #Abre la ventana de inmediato y obliga a cerrarla 
 
+    def ponerCarta_mesa(self,carta):
+        print(f"La carta insertada es: {carta.fotocarta} ")
+        self.mesa.carta_especifica(carta)
+        self.actualizarMesa()
+
+    def seleccionarCarta_jugador(self):
+        self.selector_cartas = SelectorCartas("Jugador",self.baraja_main.baraja,self.v_juego) #Le indicamos que su ventana padre es juego
+        self.selector_cartas.carta_selecionada_jugador.connect(self.ponerCarta_jugador)
+        self.selector_cartas.exec()
+
+    def ponerCarta_jugador(self,carta):
+        self.jugador_actual[0].jugadorMano(carta)
+        self.baraja_main.baraja.remove(carta)
+        self.actualizarJugador()
+        
     def resultados(self):
         self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_graficas)
-        
+
+    def repartirMano_ramdon(self):
+        if self.jugador_actual[0].mano:
+            print("El jugador ya tiene mano")
+        else:
+            self.jugador_actual[0].jugadorMano_ramdon(self.baraja_main)
+            self.actualizarJugador()
