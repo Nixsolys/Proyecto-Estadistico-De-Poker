@@ -12,13 +12,15 @@ class SelectorCartas(QDialog): #ventana secundaria
     carta_selecionada_jugador = Signal(object)
 
 
-    def __init__(self,identificador, mazo, parent=None):
+    def __init__(self,identificador, mazo, jugador,mesa, parent=None):
         super().__init__(parent)
 
         self.setWindowTitle("Seleccionar carta")
         self.resize(700, 500)
 
         self.mazo = mazo
+        self.mesa = mesa
+        self.jugador = jugador
 
         BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -63,14 +65,20 @@ class SelectorCartas(QDialog): #ventana secundaria
             ) #Coloca el boton en esta fila y esta columna
 
     def seleccionarCarta_mesa(self, carta,boton):
-        print("Carta seleccionada:", carta.fotocarta)
-        self.carta_selecionada_mesa.emit(carta)
-        self.eliminarBoton(boton)
+        if len(self.mesa.espacio_cartas) == 5:
+            print("Mesa llena")
+        else:
+            print("Carta seleccionada:", carta.fotocarta)
+            self.carta_selecionada_mesa.emit(carta)
+            self.eliminarBoton(boton)
 
     def seleccionarCarta_jugador(self, carta,boton):
-        print("Carta seleccionada:", carta.fotocarta)
-        self.carta_selecionada_jugador.emit(carta)
-        self.eliminarBoton(boton)
+        if len(self.jugador.mano) == 2:
+            print("Mano llena")
+        else:
+            print("Carta seleccionada:", carta.fotocarta)
+            self.carta_selecionada_jugador.emit(carta)
+            self.eliminarBoton(boton)
 
     def eliminarBoton(self,boton):
         self.layout_principal.removeWidget(boton) #Borrarlo visualmente
