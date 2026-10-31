@@ -39,7 +39,6 @@ class VConfiguracion(VentanaMolde):
             }
         """)
 
-
         self.texto2 = QLabel("IZQUIERDA")
         self.texto3 = QLabel("DERECHA")
         self.texto4 = QLabel("C1")
@@ -56,8 +55,8 @@ class VConfiguracion(VentanaMolde):
         self.lista_jugadores.setFixedSize(300,200)
 
     #Botones
-        self.añadir_jugador = BotonAnimado("♥",50,50)
-        self.eliminar_jugador = BotonAnimado("♡",50,50)
+        self.añadir_jugador = BotonAnimado("+",50,50)
+        self.eliminar_jugador = BotonAnimado("-",50,50)
         self.iniciar_juego = BotonAnimado("-->",50,50)
 
     #Imagenes
