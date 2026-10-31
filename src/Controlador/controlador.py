@@ -245,8 +245,8 @@ class Controlador():
 # Resultados -----------------------------------------------------------------------------------------------------------------------------
 
     def reiniciar(self):
-        pass
-
+        self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_juego)
+        self.limpiarMesa()
     def volverMenu(self):
         self.controlador_ventana_main.capa_main.setCurrentWidget(self.v_menu)
         self.limpiarDatos()
@@ -261,6 +261,27 @@ class Controlador():
         self.baraja_main.baraja.clear()
         self.mesa.espacio_cartas.clear()
         self.baraja_main.crear_baraja()
+
+        vacio = self.BASE_DIR / "resources" / "componentes" / "cartas" / "zonaoscura.png"
+        
+        foto_vacio = QPixmap(str(vacio))
+
+        self.v_juego.label_espacio1.setPixmap(foto_vacio)
+        self.v_juego.label_espacio2.setPixmap(foto_vacio)
+        self.v_juego.label_espacio3.setPixmap(foto_vacio)
+        self.v_juego.label_espacio4.setPixmap(foto_vacio)
+        self.v_juego.label_espacio5.setPixmap(foto_vacio)
+
+        self.v_juego.label_mano1.setPixmap(foto_vacio)
+        self.v_juego.label_mano2.setPixmap(foto_vacio)
+
+    def limpiarMesa(self):
+        self.baraja_main.baraja.clear()
+        self.mesa.espacio_cartas.clear()
+        self.baraja_main.crear_baraja()
+
+        for i in self.lista_jugadores:
+            i.mano.clear()
 
         vacio = self.BASE_DIR / "resources" / "componentes" / "cartas" / "zonaoscura.png"
         
