@@ -24,7 +24,7 @@ configuracion = VConfiguracion()
 juego = VentanaJuego()
 graficas = VentanaGrafica()
 ventana_principal = Ventana(menu,configuracion,juego,graficas)
-controlador = Controlador(ventana_principal)
+controlador = Controlador(ventana_principal,app)
 
 ventana_principal.show()
 

@@ -38,16 +38,16 @@ class VentanaGrafica(QWidget):
         self.canvas = FigureCanvasQTAgg(self.fig)
 
     #Botones
-        boton_reiniciar = BotonAnimado("Reiniciar",300,50)
-        boton_menu = BotonAnimado("Menu",300,50)
-        boton_salir = BotonAnimado("Salir",300,50)
+        self.boton_reiniciar = BotonAnimado("Reiniciar",300,50)
+        self.boton_menu = BotonAnimado("Menu",300,50)
+        self.boton_salir = BotonAnimado("Salir",300,50)
 
         layout.addWidget(self.canvas)
         layout.addWidget(contenedor_principal)
 
-        layout_boton.addWidget(boton_reiniciar)
-        layout_boton.addWidget(boton_menu)
-        layout_boton.addWidget(boton_salir)
+        layout_boton.addWidget(self.boton_reiniciar)
+        layout_boton.addWidget(self.boton_menu)
+        layout_boton.addWidget(self.boton_salir)
 
     # Forzar el primer dibujo
         self.canvas.draw()
