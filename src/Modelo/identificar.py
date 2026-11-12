@@ -16,9 +16,6 @@ class Indentificar():
             self.lista_cartas_mano.append(i)
             self.listaPesoMano.append(i.peso)
 
-    def obtenerTipo(self):
-        pass
-
     def escaleraReal(self):
         if self.listaPesoMano[1] == self.listaPesoMano[0] - 0.076:
             self.listaPesoMesa.append(self.listaPesoMano[1])
@@ -57,7 +54,6 @@ class Indentificar():
                 return 2
             else:
                 return False
-
 
     def color(self):
 
@@ -152,6 +148,9 @@ class Indentificar():
 
         return indicador,carta
 
+    def contarEscalera(self,cartas):
+        pass
+
     def resultado(self):
         if self.escaleraReal():
             print("Se detecto una escalera Real")
@@ -172,4 +171,4 @@ class Indentificar():
         elif self.pareja():
             pass
         elif self.cartaAlta():
-            pass          
+            pass 
