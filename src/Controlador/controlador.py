@@ -3,6 +3,7 @@ from src.Modelo.Jugador import *
 from src.Modelo.baraja import *
 from PySide6.QtGui import QPixmap
 from src.Modelo.mesa import *
+from src.Modelo.identificar import *
 from src.Vista.ventan_selector import SelectorCartas
 """
 La tarea de esta clase es administrar y comunicar los distintos modulos, con el fin
@@ -123,6 +124,7 @@ class Controlador():
             self.jugador_actual[0] = jugador
 
         self.actualizarJugador() #Actualizar informacion del jugador
+        self.calcular()
 
 #Pagina 3 - Juego
 
@@ -295,3 +297,9 @@ class Controlador():
 
         self.v_juego.label_mano1.setPixmap(foto_vacio)
         self.v_juego.label_mano2.setPixmap(foto_vacio)
+
+    def calcular(self):
+            if self.mesa.espacio_cartas and len(self.jugador_actual[0].mano) == 2:
+                calculador = Indentificar(self.mesa,self.jugador_actual[0])
+                calculador.resultado()
+                print("Changuito")
